@@ -2,10 +2,9 @@ import stringHash from 'string-hash'
 import * as cookie from 'cookie'
 import { v4 as uuidv4 } from 'uuid'
 import { Database } from 'arangojs'
-import jwt from 'jsonwebtoken'
 
 import beusers from '$lib/database/arangodb/schemas/beusers'
-import generateJWT from './generateJWT'
+import generateJWT from './_generateJWT'
 
 const {
   VITE_DB_PORT,
@@ -121,8 +120,6 @@ export async function post({
       }
     }
   } catch (error) {
-    console.error(error.message)
-
     return {
       status: 500,
       body: {

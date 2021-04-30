@@ -26,7 +26,6 @@ import { authenticated } from '$lib/stores/userStore';
         throw new Error(JSON.stringify(res))
       }
     } catch (error) {
-      console.error(error)
       errorMessage = error
     }
   }
