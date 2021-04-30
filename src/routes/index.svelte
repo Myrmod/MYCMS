@@ -1,11 +1,10 @@
 <script lang="ts">
   import Login from '$lib/components/Login.svelte'
-
-  export let isLoggedIn = false
+  import { authenticated } from '$lib/stores/userStore'
 </script>
 
 <section>
-  {#if !isLoggedIn}
+  {#if !$authenticated}
     <Login />
   {:else}
     <h1>You are logged in</h1>

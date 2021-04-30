@@ -1,8 +1,32 @@
-<!-- <script context="module" lang="ts" ✂prettier:content✂="CgkvKioKCSAqIEB0eXBlIHtpbXBvcnQoJ0BzdmVsdGVqcy9raXQnKS5Mb2FkfQoJICovCglleHBvcnQgYXN5bmMgZnVuY3Rpb24gbG9hZCh7IHBhZ2UsIGZldGNoLCBzZXNzaW9uLCBjb250ZXh0IH0pIHsKCQljb25zdCBpc0xvZ2dlZEluID0gZmFsc2UKCgkJaWYgKCFpc0xvZ2dlZEluKSByZXR1cm4gewoJCQlyZWRpcmVjdDogJy9sb2dpbicsCgkJCXN0YXR1czogMzA3LAoJCX0KCgkJcmV0dXJuIHsKCQkJcHJvcHM6IHsKCQkJCWlzTG9nZ2VkSW4sCgkJCX0KCQl9Cgl9Cg==">{}</script> -->
-<script lang="ts">
-  import '../styles/app.styl'
+<script context='module' lang='ts'>
+  import { authenticated } from '$lib/stores/userStore'
+
+  export async function load({ page, session }) {
+    authenticated.update(v => v = session.authenticated)
+
+    if (!session.authenticated && page.path !== '/') {
+      return {
+        status: 302,
+        redirect: '/',
+      }
+    }
+
+    return {}
+  }
 </script>
 
-<main>
-  <slot />
-</main>
+<script lang="ts">
+  import '../styles/app.styl'
+  import Header from '$lib/components/Header/index.svelte'
+</script>
+
+{#if !$authenticated}
+  <main>
+    <slot />
+  </main>
+{:else}
+  <Header />
+  <main>
+    <slot />
+  </main>
+{/if}

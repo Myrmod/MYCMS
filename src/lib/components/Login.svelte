@@ -1,7 +1,5 @@
 <script lang="ts">
-  import { createEventDispatcher } from 'svelte'
-
-  const dispatch = createEventDispatcher()
+import { authenticated } from '$lib/stores/userStore';
 
   let email = ''
   let password = ''
@@ -23,7 +21,7 @@
       })
 
       if (res.ok) {
-        dispatch('success')
+        authenticated.update(v => v = true)
       } else {
         throw new Error(JSON.stringify(res))
       }
