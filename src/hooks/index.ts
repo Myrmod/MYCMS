@@ -1,34 +1,48 @@
 import * as cookie from 'cookie'
 import refreshJWT from './refreshJWT'
 
-export async function handle({ request, render }) {
-  const response = await render(request);
-  const cookies = cookie.parse(`${request.headers.cookie}`)
+export async function getContext({
+  headers,
+}): Promise<{
+  authenticated: boolean
+}> {
+  console.log('getcontext')
+
+  const cookies = cookie.parse(`${headers.cookie}`)
 
   if (!cookies?.jwt) {
     if (cookies.refresh) {
       const val = await refreshJWT(cookies.refresh)
 
-      return {
-        ...response,
-        status: val.status,
-        headers: {
-          ...response.headers,
-          ...val.headers,
-        },
-        body: {
-          ...response.body,
-          ...val.body,
-        },
-        authenticated: val.authenticated,
-      }
+      return val
+    }
+
+    return {
+      authenticated: false,
     }
   }
 
-  console.log(request);
+  return {
+    authenticated: true,
+  }
+}
+
+export function getSession({ context }) {
+  console.log('getSession')
+
+  return context
+}
+
+export async function handle({ request, render }) {
+  console.log('handle', request.context.headers)
+
+  const response = await render(request)
 
   return {
     ...response,
-    authenticated: true,
+    headers: {
+      ...response.headers,
+      ...request.context.headers,
+    },
   }
 }

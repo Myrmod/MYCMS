@@ -64,28 +64,29 @@ export async function post({
       const token = await generateJWT(usedDB, usersCol, body)
       const refresh = await generateJWT(usedDB, usersCol, body, 'refresh')
 
-      if (token && refresh) return {
-        status: 201,
-        headers: {
-          'set-cookie': [
-            cookie.serialize('jwt', token, {
-              httpOnly: true,
-              maxAge: 60 * 10,
-              sameSite: 'strict',
-              path: '/',
-            }),
-            cookie.serialize('refresh', refresh, {
-              httpOnly: true,
-              maxAge: body.remember ? 60 * 60 * 24 * 7 : undefined,
-              sameSite: 'strict',
-              path: '/',
-            }),
-          ],
-        },
-        body: {
-          message: 'new user created',
-        },
-      }
+      if (token && refresh)
+        return {
+          status: 201,
+          headers: {
+            'set-cookie': [
+              cookie.serialize('jwt', token, {
+                httpOnly: true,
+                maxAge: 60 * 10,
+                sameSite: 'strict',
+                path: '/',
+              }),
+              cookie.serialize('refresh', refresh, {
+                httpOnly: true,
+                maxAge: body.remember ? 60 * 60 * 24 * 7 : undefined,
+                sameSite: 'strict',
+                path: '/',
+              }),
+            ],
+          },
+          body: {
+            message: 'new user created',
+          },
+        }
     } else {
       console.info('checking if requested user exists...')
 

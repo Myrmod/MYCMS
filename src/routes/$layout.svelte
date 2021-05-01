@@ -1,8 +1,8 @@
-<script context='module' lang='ts'>
+<script context="module" lang="ts">
   import { authenticated } from '$lib/stores/userStore'
 
   export async function load({ page, session }) {
-    authenticated.update(v => v = session.authenticated)
+    authenticated.update(v => (v = session.authenticated))
 
     if (!session.authenticated && page.path !== '/') {
       return {

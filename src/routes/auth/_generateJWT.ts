@@ -43,8 +43,6 @@ export default async function generateJWT(
     `,
   )
 
-  console.log('user', passedUser,user);
-
   if (user) {
     if (key === 'refresh') {
       const token = jwt.sign(user, `${import.meta.env.VITE_JWT_REFRESH}`)
@@ -74,18 +72,20 @@ export default async function generateJWT(
         })
       }
 
-      console.log('trying to save token', token);
+      console.log('trying to save token', token)
+      await tokenCol.save(
+        {
+          token,
+          expireDate: passedUser.remember
+            ? Date.now() + 60 * 60 * 24 * 7
+            : new Date().setUTCHours(0, 0, 0, 0),
+        },
+        {
+          silent: true,
+        },
+      )
 
-      //  * 60 * 24 * 7
-      await tokenCol.save({
-        token,
-        expireDate: passedUser.remember ? Date.now() + 60 : new Date().setUTCHours(0, 0, 0, 0),
-      }, {
-        silent: true,
-      })
-
-      console.log('saved token successfully');
-
+      console.log('saved token successfully')
 
       return token
     }

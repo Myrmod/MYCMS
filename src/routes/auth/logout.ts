@@ -5,7 +5,6 @@ export async function get({ headers }) {
 
   console.log('cookies:', cookies)
 
-
   return {
     status: 200,
     headers: {

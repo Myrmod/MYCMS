@@ -1,5 +1,5 @@
 <script lang="ts">
-import { authenticated } from '$lib/stores/userStore';
+  import { authenticated } from '$lib/stores/userStore'
 
   let email = ''
   let password = ''
@@ -21,7 +21,7 @@ import { authenticated } from '$lib/stores/userStore';
       })
 
       if (res.ok) {
-        authenticated.update(v => v = true)
+        authenticated.update(v => (v = true))
       } else {
         throw new Error(JSON.stringify(res))
       }
