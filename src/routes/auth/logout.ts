@@ -9,7 +9,7 @@ export async function get({ headers }) {
   return {
     status: 200,
     headers: {
-      'Set-Cookie': [
+      'set-cookie': [
         cookie.serialize('jwt', 'deleted', {
           httpOnly: true,
           expires: new Date(0),

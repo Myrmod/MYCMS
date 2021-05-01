@@ -6,26 +6,6 @@ import { Database } from 'arangojs'
 import beusers from '$lib/database/arangodb/schemas/beusers'
 import generateJWT from './_generateJWT'
 
-const {
-  VITE_DB_PORT,
-  VITE_DB_NAME,
-  VITE_DB_URL,
-  VITE_DB_USERNAME,
-  VITE_DB_PASSWORD,
-} = import.meta.env
-
-if (!VITE_DB_URL) throw new Error('no database url provided')
-if (!VITE_DB_PORT) throw new Error('no database port provided')
-if (!VITE_DB_NAME) throw new Error('no database name provided')
-
-const db = new Database({
-  url: `${VITE_DB_URL}:${VITE_DB_PORT}`,
-  auth: {
-    username: VITE_DB_USERNAME,
-    password: VITE_DB_PASSWORD,
-  },
-})
-
 export async function post({
   body,
 }): Promise<{
@@ -36,6 +16,26 @@ export async function post({
   }
 }> {
   try {
+    const {
+      VITE_DB_PORT,
+      VITE_DB_NAME,
+      VITE_DB_URL,
+      VITE_DB_USERNAME,
+      VITE_DB_PASSWORD,
+    } = import.meta.env
+
+    if (!VITE_DB_URL) throw new Error('no database url provided')
+    if (!VITE_DB_PORT) throw new Error('no database port provided')
+    if (!VITE_DB_NAME) throw new Error('no database name provided')
+
+    const db = new Database({
+      url: `${VITE_DB_URL}:${VITE_DB_PORT}`,
+      auth: {
+        username: VITE_DB_USERNAME,
+        password: VITE_DB_PASSWORD,
+      },
+    })
+
     let usedDB = db
 
     if (!(await db.listDatabases()).includes(VITE_DB_NAME)) {
@@ -67,7 +67,7 @@ export async function post({
       if (token && refresh) return {
         status: 201,
         headers: {
-          'Set-Cookie': [
+          'set-cookie': [
             cookie.serialize('jwt', token, {
               httpOnly: true,
               maxAge: 60 * 10,
@@ -98,7 +98,7 @@ export async function post({
         return {
           status: 200,
           headers: {
-            'Set-Cookie': [
+            'set-cookie': [
               cookie.serialize('jwt', token, {
                 httpOnly: true,
                 maxAge: 60 * 10,
