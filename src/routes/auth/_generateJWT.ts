@@ -72,7 +72,6 @@ export default async function generateJWT(
         })
       }
 
-      console.log('trying to save token', token)
       await tokenCol.save(
         {
           token,

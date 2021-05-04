@@ -4,7 +4,8 @@ import generateJWT from '../routes/auth/_generateJWT'
 import { Database } from 'arangojs'
 
 export default async function refreshJWT(refreshToken: string) {
-  const {
+  try {
+    const {
     VITE_DB_PORT,
     VITE_DB_NAME,
     VITE_DB_URL,
@@ -81,4 +82,12 @@ export default async function refreshJWT(refreshToken: string) {
       }
     },
   )
+  } catch (error) {
+    console.error(error)
+
+    return  {
+      status: 403,
+      authenticated: false,
+    }
+  }
 }
