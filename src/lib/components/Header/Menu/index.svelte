@@ -4,13 +4,13 @@
 <nav>
   <ul>
     <li>
-      <a href="settings" preload="true"> Settings </a>
+      <a href="/api-creator" preload="true"> API Creator </a>
     </li>
     <li>
-      <a href="api-creator" preload="true"> API Creator </a>
+      <a href="/api-preview" preload="true"> API Preview </a>
     </li>
     <li>
-      <a href="api-preview" preload="true"> API Preview </a>
+      <a href="/settings" preload="true"> Settings </a>
     </li>
   </ul>
 </nav>

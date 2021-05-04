@@ -26,7 +26,5 @@
   </main>
 {:else}
   <Header />
-  <main>
-    <slot />
-  </main>
+  <slot />
 {/if}
