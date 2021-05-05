@@ -59,6 +59,7 @@ export async function post({
         _key: uuidv4(),
         email: `${stringHash(body.email)}`,
         password: `${stringHash(body.password)}`,
+        role: 'admin'
       })
 
       const token = await generateJWT(usedDB, usersCol, body)

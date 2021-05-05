@@ -1,0 +1,18 @@
+{
+  "ContentElement": {
+    "select": "Select",
+    "text": "Text",
+    "textarea": "Textarea",
+    "rte": "Rich Text",
+    "number": "Number",
+    "checkbox": "Checkbox",
+    "radiolist": "Radio List",
+    "array": "Array",
+    "object": "Object"
+  },
+  "ContentElementGroup": {
+    "basic": "Basic",
+    "complex": "Complex",
+    "custom": "Custom"
+  }
+}
