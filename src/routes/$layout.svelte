@@ -2,16 +2,22 @@
   import { authenticated } from '$lib/stores/userStore'
 
   export async function load({ page, session }) {
-    authenticated.update(v => (v = session.authenticated))
+    try {
+      authenticated.update(v => (v = session.authenticated))
 
-    if (!session.authenticated && page.path !== '/') {
-      return {
-        status: 302,
-        redirect: '/',
+      if (!session.authenticated && page.path !== '/') {
+        return {
+          status: 302,
+          redirect: '/',
+        }
       }
-    }
 
-    return {}
+      return {}
+    } catch (error) {
+      console.error(error)
+
+      return {}
+    }
   }
 </script>
 

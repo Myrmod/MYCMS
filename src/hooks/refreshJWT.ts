@@ -2,16 +2,17 @@ import * as cookie from 'cookie'
 import jwt from 'jsonwebtoken'
 import generateJWT from '../routes/auth/_generateJWT'
 import { Database } from 'arangojs'
+import dotenv from 'dotenv'
 
 export default async function refreshJWT(refreshToken: string) {
   try {
     const {
-    VITE_DB_PORT,
-    VITE_DB_NAME,
-    VITE_DB_URL,
-    VITE_DB_USERNAME,
-    VITE_DB_PASSWORD,
-  } = import.meta.env
+    DB_PORT,
+    DB_NAME,
+    DB_URL,
+    DB_USERNAME,
+    DB_PASSWORD,
+  } = dotenv.config().parsed
 
   if (!refreshToken) {
     return {
@@ -21,11 +22,11 @@ export default async function refreshJWT(refreshToken: string) {
   }
 
   const db = new Database({
-    url: `${VITE_DB_URL}:${VITE_DB_PORT}`,
-    databaseName: `${VITE_DB_NAME}`,
+    url: `${DB_URL}:${DB_PORT}`,
+    databaseName: `${DB_NAME}`,
     auth: {
-      username: VITE_DB_USERNAME,
-      password: VITE_DB_PASSWORD,
+      username: DB_USERNAME,
+      password: DB_PASSWORD,
     },
   })
 
@@ -54,8 +55,19 @@ export default async function refreshJWT(refreshToken: string) {
 
   return jwt.verify(
     refreshToken,
-    `${import.meta.env.VITE_JWT_REFRESH}`,
-    async (_err, user: { email: string; password: string }) => {
+    `${dotenv.config().parsed.JWT_REFRESH}`,
+    async (err, user: { email: string; password: string }) => {
+      if (err) {
+        console.error(err)
+
+        return {
+          status: 401,
+          body: {
+            message: err,
+          }
+        }
+      }
+
       const token = await generateJWT(db, db.collection('beusers'), {
         email: user.email,
         password: user.password,

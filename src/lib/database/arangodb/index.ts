@@ -1,7 +1,8 @@
 import { aql, Database } from 'arangojs'
 import { collections as neededCollections } from './structure'
+import dotenv from 'dotenv'
 
-const { DB_PORT, DB_NAME, DB_URL } = process.env
+const { DB_PORT, DB_NAME, DB_URL } = dotenv.config().parsed
 
 export default class DB {
   private static instance: DB

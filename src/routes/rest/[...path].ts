@@ -1,26 +1,27 @@
 import restAPI from "$lib/database/arangodb/schemas/restAPI"
 import { Database } from "arangojs"
+import dotenv from 'dotenv'
 
 export async function get({ path }) {
   try {
     const {
-      VITE_DB_PORT,
-      VITE_DB_NAME,
-      VITE_DB_URL,
-      VITE_DB_USERNAME,
-      VITE_DB_PASSWORD,
-    } = import.meta.env
+      DB_PORT,
+      DB_NAME,
+      DB_URL,
+      DB_USERNAME,
+      DB_PASSWORD,
+    } = dotenv.config().parsed
 
-    if (!VITE_DB_URL) throw new Error('no database url provided')
-    if (!VITE_DB_PORT) throw new Error('no database port provided')
-    if (!VITE_DB_NAME) throw new Error('no database name provided')
+    if (!DB_URL) throw new Error('no database url provided')
+    if (!DB_PORT) throw new Error('no database port provided')
+    if (!DB_NAME) throw new Error('no database name provided')
 
     const db = new Database({
-      url: `${VITE_DB_URL}:${VITE_DB_PORT}`,
-      databaseName: VITE_DB_NAME,
+      url: `${DB_URL}:${DB_PORT}`,
+      databaseName: DB_NAME,
       auth: {
-        username: VITE_DB_USERNAME,
-        password: VITE_DB_PASSWORD,
+        username: DB_USERNAME,
+        password: DB_PASSWORD,
       },
     })
 

@@ -1,6 +1,7 @@
 import stringHash from 'string-hash'
 import { v4 as uuidv4 } from 'uuid'
 import { Database } from 'arangojs'
+import dotenv from 'dotenv'
 
 import beusers from '$lib/database/arangodb/schemas/beusers'
 
@@ -14,32 +15,32 @@ export async function post({
 }> {
   try {
     const {
-      VITE_DB_PORT,
-      VITE_DB_NAME,
-      VITE_DB_URL,
-      VITE_DB_USERNAME,
-      VITE_DB_PASSWORD,
-    } = import.meta.env
+      DB_PORT,
+      DB_NAME,
+      DB_URL,
+      DB_USERNAME,
+      DB_PASSWORD,
+    } = dotenv.config().parsed
 
-    if (!VITE_DB_URL) throw new Error('no database url provided')
-    if (!VITE_DB_PORT) throw new Error('no database port provided')
-    if (!VITE_DB_NAME) throw new Error('no database name provided')
+    if (!DB_URL) throw new Error('no database url provided')
+    if (!DB_PORT) throw new Error('no database port provided')
+    if (!DB_NAME) throw new Error('no database name provided')
 
     const db = new Database({
-      url: `${VITE_DB_URL}:${VITE_DB_PORT}`,
+      url: `${DB_URL}:${DB_PORT}`,
       auth: {
-        username: VITE_DB_USERNAME,
-        password: VITE_DB_PASSWORD,
+        username: DB_USERNAME,
+        password: DB_PASSWORD,
       },
     })
 
     let usedDB = db
 
-    if (!(await db.listDatabases()).includes(VITE_DB_NAME)) {
-      console.info(`database "${VITE_DB_NAME}" does not exists. Creating it...`)
-      await db.createDatabase(VITE_DB_NAME)
+    if (!(await db.listDatabases()).includes(DB_NAME)) {
+      console.info(`database "${DB_NAME}" does not exists. Creating it...`)
+      await db.createDatabase(DB_NAME)
     }
-    usedDB = db.database(VITE_DB_NAME)
+    usedDB = db.database(DB_NAME)
 
     // check if collection exists, if not create it with provided user
     const usersCol = usedDB.collection('beusers')

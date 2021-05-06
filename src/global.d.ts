@@ -3,9 +3,9 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  VITE_DB_PORT: string
-  VITE_DB_NAME: string
-  VITE_DB_USERNAME: string
-  VITE_DB_PASSWORD: string
-  VITE_DB_URL: string
+  DB_PORT: string
+  DB_NAME: string
+  DB_USERNAME: string
+  DB_PASSWORD: string
+  DB_URL: string
 }
