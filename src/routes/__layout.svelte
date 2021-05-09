@@ -24,6 +24,16 @@
 <script lang="ts">
   import '../styles/app.styl'
   import Header from '$lib/components/Header/index.svelte'
+  import { onMount } from 'svelte'
+
+  if (import.meta.env.DEV) {
+    onMount(() => {
+      import('https://unpkg.com/agnostic-axe@3').then(({ AxeObserver, logViolations }) => {
+        const MyAxeObserver = new AxeObserver(logViolations)
+        MyAxeObserver.observe(document)
+      })
+    })
+  }
 </script>
 
 {#if !$authenticated}

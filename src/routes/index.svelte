@@ -3,13 +3,13 @@
   import { authenticated } from '$lib/stores/userStore'
 </script>
 
-<section>
+<main>
   {#if !$authenticated}
     <Login />
   {:else}
     <h1>You are logged in</h1>
   {/if}
-</section>
+</main>
 
 <style lang="stylus">
 

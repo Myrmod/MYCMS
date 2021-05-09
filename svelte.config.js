@@ -1,8 +1,11 @@
 import sveltePreprocess from 'svelte-preprocess'
 import node from '@sveltejs/adapter-node'
+import svg from '@netulip/rollup-plugin-svg'
+import path from 'path'
 
 /** @type {import('@sveltejs/kit').Config} */
 export default {
+  extensions: ['.svelte', '.svg'],
   // Consult https://github.com/sveltejs/svelte-preprocess
   // for more information about preprocessors
   preprocess: sveltePreprocess({
@@ -22,7 +25,14 @@ export default {
 
     vite: {
       ssr: {},
-      plugins: [],
+      plugins: [
+        svg.default({ enforce: 'pre' }),
+      ],
+      resolve: {
+        alias: {
+          '$icons': path.resolve('src/assets/icons')
+        }
+      }
     },
 
     files: {
