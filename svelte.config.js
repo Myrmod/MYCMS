@@ -27,6 +27,26 @@ export default {
       ssr: {},
       plugins: [
         svg.default({ enforce: 'pre' }),
+        {
+          name: 'vite-plugin-agnostic-axe',
+          transformIndexHtml(html, ctx) {
+            if (ctx.server?.config.mode !== 'development') return html
+
+            const snippet = `
+              <script>
+                import('https://unpkg.com/agnostic-axe@3').then(
+                  ({ AxeObserver, logViolations }) => {
+                    const MyAxeObserver = new AxeObserver(logViolations)
+                    MyAxeObserver.observe(document)
+                  }
+                )
+              </script>
+            `
+            html = html.replace('</body>', snippet + '</body>')
+
+            return html
+          }
+        },
       ],
       resolve: {
         alias: {
