@@ -7,6 +7,9 @@ import dotenv from 'dotenv'
 import beusers from '$lib/database/arangodb/schemas/beusers'
 import generateJWT from './_generateJWT'
 
+/**
+ * @type {import('@sveltejs/kit').RequestHandler}
+ */
 export async function post({
   body,
 }): Promise<{
