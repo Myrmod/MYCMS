@@ -4,16 +4,16 @@ export function getSession({ locals }) {
   return locals
 }
 
-export async function handle({ request, render }) {
+export async function handle({ request, resolve }) {
   const authentication = await authenticate({ headers: request.headers })
   request.locals.authenticated = authentication.authenticated
 
-  const result = await render(request)
+  const response = await resolve(request)
 
-  result.headers = {
-    ...result.headers,
+  response.headers = {
+    ...response.headers,
     ...authentication.headers,
   }
 
-  return result
+  return response
 }
